@@ -10,6 +10,7 @@ kotlin = "2.2.10"
 composeBom = "2026.02.01"
 iconsaxCompose = "0.0.5"
 splittiesFunPackAndroidBase = "3.0.0"
+navigationCompose = "2.9.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +29,7 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 iconsax-compose = { module = "io.github.rabehx:iconsax-compose", version.ref = "iconsaxCompose" }
 splitties-base = { module = "com.louiscad.splitties:splitties-fun-pack-android-base", version.ref = "splittiesFunPackAndroidBase" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

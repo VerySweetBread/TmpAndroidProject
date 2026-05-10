@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,23 +25,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import io.github.rabehx.iconsax.Iconsax
-import io.github.rabehx.iconsax.automirrored.filled.ArrowRight2
-import io.github.rabehx.iconsax.automirrored.filled.ArrowRight3
 import io.github.rabehx.iconsax.automirrored.outline.ArrowRight2
 import io.github.rabehx.iconsax.outline.Heart
 import io.github.rabehx.iconsax.outline.MusicPlaylist
 import io.github.rabehx.iconsax.outline.SearchNormal
-import io.github.rabehx.iconsax.outline.Setting
 import io.github.rabehx.iconsax.outline.Setting2
-import io.github.rabehx.iconsax.outline.Settings
+import ru.risdeveau.tmpapp.ui.screen.Settings
 import ru.risdeveau.tmpapp.ui.theme.TmpappTheme
+import splitties.resources.str
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,29 +47,43 @@ class MainActivity : ComponentActivity() {
         setContent {
             TmpappTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background)
-                    ) {
-                        Header()
+                    val navController = rememberNavController()
 
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = 72.dp)
-                                .clip(RoundedCornerShape(
-                                    topStart = 16.dp,
-                                    topEnd = 16.dp
-                                ))
-                                .background(MaterialTheme.colorScheme.background)
-                                .padding(top = 16.dp)
-                        ) {
-                            MenuRow(Iconsax.Outline.SearchNormal, "Поиск")
-                            MenuRow(Iconsax.Outline.MusicPlaylist, "Плейлисты")
-                            MenuRow(Iconsax.Outline.Heart, "Избранное")
-                            MenuRow(Iconsax.Outline.Setting2, "Настройки")
+                    NavHost(navController = navController, startDestination = "main") {
+                        composable("main") {
+                            Box(
+                                modifier = Modifier
+                                    .padding(innerPadding)
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.background)
+                            ) {
+                                Header()
+
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(top = 72.dp)
+                                        .clip(
+                                            RoundedCornerShape(
+                                                topStart = 16.dp,
+                                                topEnd = 16.dp
+                                            )
+                                        )
+                                        .background(MaterialTheme.colorScheme.background)
+                                        .padding(top = 16.dp)
+                                ) {
+                                    MenuRow(Iconsax.Outline.SearchNormal, "Поиск", {})
+                                    MenuRow(Iconsax.Outline.MusicPlaylist, "Плейлисты", {})
+                                    MenuRow(Iconsax.Outline.Heart, "Избранное", {})
+                                    MenuRow(Iconsax.Outline.Setting2, str(R.string.settings)) {
+                                        navController.navigate("settings")
+                                    }
+                                }
+                            }
+                        }
+
+                        composable("settings") {
+                            Settings(Modifier.fillMaxSize()) { navController.popBackStack() }
                         }
                     }
                 }
@@ -102,13 +114,17 @@ private fun Header() {
 @Composable
 private fun MenuRow(
     icon: ImageVector,
-    title: String
+    title: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 6.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 18.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
