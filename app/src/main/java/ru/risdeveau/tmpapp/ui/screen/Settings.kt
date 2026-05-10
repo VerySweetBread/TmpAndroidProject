@@ -72,7 +72,7 @@ private fun MenuRow(
     ) {
         Text(
             text = title,
-            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.weight(1f)
         )
 

@@ -105,8 +105,7 @@ private fun Header() {
         Text(
             text = "Playlist maker",
             color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = MaterialTheme.typography.headlineMedium.fontSize,
-            fontWeight = MaterialTheme.typography.headlineMedium.fontWeight
+            style = MaterialTheme.typography.headlineMedium
         )
     }
 }
@@ -137,13 +136,13 @@ private fun MenuRow(
 
         Text(
             text = title,
-            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.weight(1f)
         )
 
         Icon(
             imageVector = Iconsax.AutoMirrored.Outline.ArrowRight2,
-            contentDescription = null
+            contentDescription = title
         )
     }
 }
