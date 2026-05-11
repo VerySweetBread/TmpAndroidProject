@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.risdeveau.tmpapp.ui.screen.MainScreen
+import ru.risdeveau.tmpapp.ui.screen.SearchScreen
 import ru.risdeveau.tmpapp.ui.screen.Settings
 import ru.risdeveau.tmpapp.ui.theme.TmpappTheme
 
@@ -37,6 +38,12 @@ class MainActivity : ComponentActivity() {
                                     .fillMaxSize()
                                     .background(MaterialTheme.colorScheme.background),
                                 navController
+                            )
+                        }
+
+                        composable("search") {
+                            SearchScreen(
+                                onBackClick = { navController.popBackStack() }
                             )
                         }
 

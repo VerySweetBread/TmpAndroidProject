@@ -51,7 +51,9 @@ fun MainScreen(modifier: Modifier, navController: NavController) {
                 .background(MaterialTheme.colorScheme.background)
                 .padding(top = 16.dp)
         ) {
-            MenuRow(Iconsax.Outline.SearchNormal, "Поиск", {})
+            MenuRow(Iconsax.Outline.SearchNormal, appCtx.str(R.string.search)) {
+                navController.navigate("search")
+            }
             MenuRow(Iconsax.Outline.MusicPlaylist, "Плейлисты", {})
             MenuRow(Iconsax.Outline.Heart, "Избранное", {})
             MenuRow(Iconsax.Outline.Setting2, appCtx.str(R.string.settings)) {
