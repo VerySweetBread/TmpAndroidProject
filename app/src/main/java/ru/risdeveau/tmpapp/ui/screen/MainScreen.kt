@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import io.github.rabehx.iconsax.Iconsax
 import io.github.rabehx.iconsax.automirrored.outline.ArrowRight2
 import io.github.rabehx.iconsax.outline.Heart
@@ -34,7 +33,11 @@ import splitties.init.appCtx
 import splitties.resources.str
 
 @Composable
-fun MainScreen(modifier: Modifier, navController: NavController) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit,
+    onSettingsClick: () -> Unit
+) {
     Box(modifier) {
         Header()
 
@@ -51,14 +54,10 @@ fun MainScreen(modifier: Modifier, navController: NavController) {
                 .background(MaterialTheme.colorScheme.background)
                 .padding(top = 16.dp)
         ) {
-            MenuRow(Iconsax.Outline.SearchNormal, appCtx.str(R.string.search)) {
-                navController.navigate("search")
-            }
+            MenuRow(Iconsax.Outline.SearchNormal, appCtx.str(R.string.search), onSearchClick)
             MenuRow(Iconsax.Outline.MusicPlaylist, "Плейлисты", {})
             MenuRow(Iconsax.Outline.Heart, "Избранное", {})
-            MenuRow(Iconsax.Outline.Setting2, appCtx.str(R.string.settings)) {
-                navController.navigate("settings")
-            }
+            MenuRow(Iconsax.Outline.Setting2, appCtx.str(R.string.settings), onSettingsClick)
         }
     }
 }

@@ -40,15 +40,15 @@ import splitties.toast.toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Settings(
+fun SettingsScreen(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
     Column(modifier) {
         TopAppBar(
             navigationIcon = {
-                IconButton(onClick) {
+                IconButton(onBackClick) {
                     Icon(Iconsax.AutoMirrored.Outline.ArrowLeft, "назад")
                 }
             },
