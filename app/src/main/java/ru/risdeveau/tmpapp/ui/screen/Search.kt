@@ -1,43 +1,41 @@
 package ru.risdeveau.tmpapp.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.rabehx.iconsax.Iconsax
 import io.github.rabehx.iconsax.automirrored.outline.ArrowLeft
+import io.github.rabehx.iconsax.outline.Eraser1
 import io.github.rabehx.iconsax.outline.SearchNormal
 import ru.risdeveau.tmpapp.R
+import splitties.init.appCtx
+import splitties.resources.str
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +43,8 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
-    var query by rememberSaveable { mutableStateOf("") }
+    val searchState = rememberTextFieldState()
+    val focusRequester = remember { FocusRequester() }
 
     Column(
         modifier = modifier
@@ -73,67 +72,39 @@ fun SearchScreen(
         )
 
         SearchField(
-            query = query,
-            onQueryChange = { query = it },
-            modifier = Modifier
+            searchState,
+            Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
+                .focusRequester(focusRequester)
         )
+
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
     }
 }
 
 @Composable
 private fun SearchField(
-    query: String,
-    onQueryChange: (String) -> Unit,
+    state: TextFieldState,
     modifier: Modifier = Modifier
 ) {
-    Surface(
+    OutlinedTextField(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surface
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(36.dp)
-                .padding(horizontal = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Iconsax.Outline.SearchNormal,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp)
-            )
-
-            Spacer(Modifier.width(6.dp))
-
-            BasicTextField(
-                value = query,
-                onValueChange = onQueryChange,
-                singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Search
-                ),
-                keyboardActions = KeyboardActions(),
-                modifier = Modifier.weight(1f),
-                decorationBox = { innerTextField ->
-                    if (query.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.search),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-                    innerTextField()
-                }
-            )
-        }
-    }
+        state = state,
+        label = { Text(appCtx.str(R.string.search)) },
+        placeholder = { Text(appCtx.str(R.string.search)) },
+        leadingIcon = { Icon(Iconsax.Outline.SearchNormal, null) },
+        trailingIcon = {
+            if (state.text.isNotEmpty())
+                Icon(
+                    Iconsax.Outline.Eraser1,
+                    appCtx.str(R.string.erase),
+                    Modifier.clickable(onClick = { state.clearText() })
+                )
+       },
+        lineLimits = TextFieldLineLimits.SingleLine,
+        keyboardOptions = KeyboardOptions( imeAction = ImeAction.Search ),
+    )
 }
