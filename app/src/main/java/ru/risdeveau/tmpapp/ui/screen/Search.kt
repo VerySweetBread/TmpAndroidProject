@@ -3,7 +3,6 @@ package ru.risdeveau.tmpapp.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -68,7 +67,6 @@ fun SearchScreen(
                 titleContentColor = MaterialTheme.colorScheme.onBackground,
                 navigationIconContentColor = MaterialTheme.colorScheme.onBackground
             ),
-            windowInsets = WindowInsets(0, 0, 0, 0)
         )
 
         SearchField(
