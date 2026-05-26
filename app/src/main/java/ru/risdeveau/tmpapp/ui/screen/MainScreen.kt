@@ -36,6 +36,7 @@ import splitties.resources.str
 fun MainScreen(
     modifier: Modifier = Modifier,
     onSearchClick: () -> Unit,
+    onAllTracksClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
     Box(modifier) {
@@ -55,6 +56,7 @@ fun MainScreen(
                 .padding(top = 16.dp)
         ) {
             MenuRow(Iconsax.Outline.SearchNormal, appCtx.str(R.string.search), onSearchClick)
+            MenuRow(Iconsax.Outline.MusicPlaylist, appCtx.str(R.string.all_tracks), onAllTracksClick)
             MenuRow(Iconsax.Outline.MusicPlaylist, "Плейлисты", {})
             MenuRow(Iconsax.Outline.Heart, "Избранное", {})
             MenuRow(Iconsax.Outline.Setting2, appCtx.str(R.string.settings), onSettingsClick)

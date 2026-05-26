@@ -7,6 +7,10 @@
     <string name="license">Пользовательское соглашение</string>
     <string name="search">Поиск</string>
     <string name="erase">Очистить поле</string>
+    <string name="back">Назад</string>
+    <string name="all_tracks">Список треков</string>
+    <string name="track_content_description">Трек %1$s</string>
+    <string name="tracks_loading_error">Ошибка: %1$s</string>
 
     <string name="share_app_text">https://github.com/VerySweetBread/TmpAndroidProject</string>
 

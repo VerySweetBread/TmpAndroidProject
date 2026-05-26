@@ -8,10 +8,12 @@ import androidx.navigation.compose.composable
 import ru.risdeveau.tmpapp.ui.screen.MainScreen
 import ru.risdeveau.tmpapp.ui.screen.SearchScreen
 import ru.risdeveau.tmpapp.ui.screen.SettingsScreen
+import ru.risdeveau.tmpapp.ui.screen.alltracks.AllTracksScreen
 
 enum class PlaylistScreen(val route: String) {
     Main("main"),
     Search("search"),
+    AllTracks("all_tracks"),
     Settings("settings")
 }
 
@@ -30,6 +32,10 @@ fun PlaylistHost(
         navigateTo(PlaylistScreen.Search)
     }
 
+    fun navigateToAllTracks() {
+        navigateTo(PlaylistScreen.AllTracks)
+    }
+
     fun navigateToSettings() {
         navigateTo(PlaylistScreen.Settings)
     }
@@ -46,12 +52,19 @@ fun PlaylistHost(
         composable(PlaylistScreen.Main.route) {
             MainScreen(
                 onSearchClick = ::navigateToSearch,
+                onAllTracksClick = ::navigateToAllTracks,
                 onSettingsClick = ::navigateToSettings
             )
         }
 
         composable(PlaylistScreen.Search.route) {
             SearchScreen(
+                onBackClick = ::navigateBack
+            )
+        }
+
+        composable(PlaylistScreen.AllTracks.route) {
+            AllTracksScreen(
                 onBackClick = ::navigateBack
             )
         }
