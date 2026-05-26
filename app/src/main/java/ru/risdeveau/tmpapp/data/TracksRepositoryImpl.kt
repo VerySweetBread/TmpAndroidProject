@@ -1,65 +1,39 @@
 package ru.risdeveau.tmpapp.data
 
 import kotlinx.coroutines.delay
+import ru.risdeveau.tmpapp.data.dto.TracksSearchRequest
+import ru.risdeveau.tmpapp.data.dto.TracksSearchResponse
+import ru.risdeveau.tmpapp.data.network.NetworkClient
 import ru.risdeveau.tmpapp.domain.model.Track
 import ru.risdeveau.tmpapp.domain.repository.TracksRepository
 
-class TracksRepositoryImpl : TracksRepository {
-    override suspend fun getAllTracks(): List<Track> {
+class TracksRepositoryImpl(
+    private val networkClient: NetworkClient
+) : TracksRepository {
+    override suspend fun searchTracks(expression: String): List<Track> {
+        val response = networkClient.doRequest(TracksSearchRequest(expression))
         delay(1000)
-        return listTracks
+
+        return if (response.resultCode == 200) {
+            (response as TracksSearchResponse).results.map { trackDto ->
+                Track(
+                    trackName = trackDto.trackName,
+                    artistName = trackDto.artistName,
+                    trackTime = formatTrackTime(trackDto.trackTimeMillis)
+                )
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    override suspend fun getAllTracks(): List<Track> {
+        return searchTracks("")
+    }
+
+    private fun formatTrackTime(trackTimeMillis: Int): String {
+        val seconds = trackTimeMillis / 1000
+        val minutes = seconds / 60
+        return "%02d:%02d".format(minutes, seconds - minutes * 60)
     }
 }
-
-private val listTracks = listOf(
-    Track(
-        trackName = "Владивосток 2000",
-        artistName = "Мумий Троль",
-        trackTime = "2:38"
-    ),
-    Track(
-        trackName = "Группа крови",
-        artistName = "Кино",
-        trackTime = "4:43"
-    ),
-    Track(
-        trackName = "Не смотри назад",
-        artistName = "Ария",
-        trackTime = "5:12"
-    ),
-    Track(
-        trackName = "Звезда по имени Солнце",
-        artistName = "Кино",
-        trackTime = "3:45"
-    ),
-    Track(
-        trackName = "Лондон",
-        artistName = "Аквариум",
-        trackTime = "4:32"
-    ),
-    Track(
-        trackName = "На заре",
-        artistName = "Альянс",
-        trackTime = "3:50"
-    ),
-    Track(
-        trackName = "Перемен",
-        artistName = "Кино",
-        trackTime = "4:56"
-    ),
-    Track(
-        trackName = "Розовый фламинго",
-        artistName = "Сплин",
-        trackTime = "3:15"
-    ),
-    Track(
-        trackName = "Танцевать",
-        artistName = "Мельница",
-        trackTime = "3:42"
-    ),
-    Track(
-        trackName = "Чёрный бумер",
-        artistName = "Серега",
-        trackTime = "4:01"
-    )
-)

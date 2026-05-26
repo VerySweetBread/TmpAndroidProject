@@ -1,4 +1,4 @@
-package ru.risdeveau.tmpapp
+package ru.risdeveau.tmpapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
