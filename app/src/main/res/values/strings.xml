@@ -11,6 +11,9 @@
     <string name="all_tracks">Список треков</string>
     <string name="track_content_description">Трек %1$s</string>
     <string name="tracks_loading_error">Ошибка: %1$s</string>
+    <string name="search_initial_message">Введите строку для поиска</string>
+    <string name="search_empty_result">Ничего не найдено</string>
+    <string name="search_error">Ошибка: %1$s</string>
 
     <string name="share_app_text">https://github.com/VerySweetBread/TmpAndroidProject</string>
 
